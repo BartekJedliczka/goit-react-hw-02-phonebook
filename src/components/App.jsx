@@ -4,6 +4,7 @@ import { nanoid } from 'nanoid';
 
 import ContactForm from './ContactForm/ContaktForm';
 import ContactList from './ContactList/ContactList';
+import Filter from './Filter/Filter';
 
 class App extends Component {
   state = {
@@ -42,6 +43,10 @@ class App extends Component {
     }));
   };
 
+  changeFilter = e => {
+    this.setState({ filter: e.currentTarget.value });
+  };
+
   filteredContacts = () => {
     const { filter, contacts } = this.state;
     const normalizedCase = filter.toLowerCase();
@@ -58,8 +63,9 @@ class App extends Component {
   };
 
   render() {
+    const { filter } = this.state;
     const filtered = this.filteredContacts();
-
+    let numberOfSearch = filtered.length;
     return (
       <div className={css.app}>
         <h1>Phonebook</h1>
@@ -67,6 +73,11 @@ class App extends Component {
         <h2>Contact</h2>
 
         <div>
+          <Filter
+            value={filter}
+            onChange={this.changeFilter}
+            result={numberOfSearch}
+          />
           <ContactList contacts={filtered} deleteContact={this.deleteContact} />
         </div>
       </div>
